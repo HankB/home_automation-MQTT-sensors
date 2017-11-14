@@ -23,10 +23,10 @@ on any host since it uses network to collect information.)
 
 ### Status
 
-Reads one sample and reports reply to STDOUT.
+* Reads one sample and reports reply to STDOUT.
+* Parse desired info from reply.
+* Publish to MQTT server
 
 ### TODO
 
-* Parse desired info from reply.
-* Publish to MQTT server
 * Make topic command line arguments.
