@@ -79,7 +79,7 @@ def publish_temperature(timestamp, temperature):
     print("publishing", payload)
     client.publish(topic,payload, qos=0, retain=True)    
 
-#delay_to_interval(update_interval)
+delay_to_interval(update_interval)
 
 print("starting main loop")
 
