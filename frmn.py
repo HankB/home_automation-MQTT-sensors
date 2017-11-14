@@ -13,8 +13,9 @@ import socket
 import argparse
 import paho.mqtt.client as mqtt
 import re
+import time
 
-version = 0.1
+version = 0.2
 
 """
 Functions related to communicating with TP-Link socket
@@ -104,6 +105,21 @@ client.connect("oak", 1883, 60)	# connect to my MQTT server
 client.loop_start()
 ### end of included code
 
+def publish_power(timestamp, I, V, W): # I, V, P => amps, volts. watts
+    payload = "{0:12.0F}, {1:3.2F}, {2:3.1F}, {3:3.1F}" \
+            .format(timestamp,float(I), float(V), float(W))
+    print("publishing", payload)
+    client.publish(topic,payload, qos=0, retain=True)    
+
+""" 
+Delay to the next minute interval some integral number of intervals
+from time zero.
+"""
+def delay_to_interval(minutes=15):
+    delay_sec = minutes*60 - int(time.time())%(minutes*60)
+    time.sleep(delay_sec)
+
+
 """
 Application logic
 """
@@ -124,17 +140,24 @@ else:
     print("Using ", args.target)
     addr = args.target
     
-reply = sendrecv('{"emeter":{"get_realtime":{}}}')
-# parse reply which looks like
-# {"emeter":{"get_realtime":{"current":1.743814,"voltage":123.531411,"power":112.291943,"total":15.761000,"
-print(reply)
-fields=re.split('[:,]', reply) # isolate readings from the string
-if len(fields) != 12 or fields[0] != '{"emeter"':
-    print("Unexpected reply:\n   ", reply)
-    current = voltage = power = 0
-else:
-    current = fields[3]
-    voltage = fields[5]
-    power = fields[7]
+update_interval = 5		# minutes
+delay_to_interval(update_interval)
 
-print("c,v,p", current, voltage, power)
+while True:    
+    timestamp = int(time.time())
+    reply = sendrecv('{"emeter":{"get_realtime":{}}}')
+    # parse reply which looks like
+    # {"emeter":{"get_realtime":{"current":1.743814,"voltage":123.531411,"power":112.291943,"total":15.761000,"
+    print(reply)
+    fields=re.split('[:,]', reply) # isolate readings from the string
+    if len(fields) != 12 or fields[0] != '{"emeter"':
+        print("Unexpected reply:\n   ", reply)
+        current = voltage = power = 0
+    else:
+        current = fields[3]
+        voltage = fields[5]
+        power = fields[7]
+
+    print("c,v,p", current, voltage, power)
+    publish_power(timestamp, current, voltage, power)
+    delay_to_interval(update_interval)
