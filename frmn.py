@@ -11,8 +11,13 @@ copied from tplink-smartplug.py
 
 import socket
 import argparse
+import paho.mqtt.client as mqtt
 
 version = 0.1
+
+"""
+Functions related to communicating with TP-Link socket
+"""
 
 # Check if IP is valid
 def validIP(ip):
@@ -65,6 +70,42 @@ def sendrecv(cmd):
     except socket.error:
         return None
 
+"""
+Functions related to publishing MQTT messages
+"""
+topic = "home_automation/"+socket.gethostname()+"/basement/freezer_power"
+
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    # client.subscribe("$SYS/#")
+
+# The callback for when a PUBLISH message is received from the server.
+def on_message(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
+
+def on_publish(client, userdata, mid):
+    print("on_publish(", client, userdata, mid, ")")
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.on_publish = on_publish
+
+client.connect("oak", 1883, 60)	# connect to my MQTT server
+
+# Blocking call that processes network traffic, dispatches callbacks and
+# handles reconnecting.
+# Other loop*() functions are available that give a threaded interface and a
+# manual interface. (changed to non-blocking call)
+client.loop_start()
+### end of included code
+
+"""
+Application logic
+"""
 
 # Parse commandline arguments
 parser = argparse.ArgumentParser(description="Freezer monitor v" + str(version))
