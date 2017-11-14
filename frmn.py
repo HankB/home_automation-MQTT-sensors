@@ -12,6 +12,7 @@ copied from tplink-smartplug.py
 import socket
 import argparse
 import paho.mqtt.client as mqtt
+import re
 
 version = 0.1
 
@@ -124,5 +125,16 @@ else:
     addr = args.target
     
 reply = sendrecv('{"emeter":{"get_realtime":{}}}')
+# parse reply which looks like
+# {"emeter":{"get_realtime":{"current":1.743814,"voltage":123.531411,"power":112.291943,"total":15.761000,"
 print(reply)
+fields=re.split('[:,]', reply) # isolate readings from the string
+if len(fields) != 12 or fields[0] != '{"emeter"':
+    print("Unexpected reply:\n   ", reply)
+    current = voltage = power = 0
+else:
+    current = fields[3]
+    voltage = fields[5]
+    power = fields[7]
 
+print("c,v,p", current, voltage, power)
