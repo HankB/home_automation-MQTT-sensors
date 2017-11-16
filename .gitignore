@@ -2,4 +2,5 @@
 .vimrc
 *.o
 paho_MQTT
+HTU21D_test
 
