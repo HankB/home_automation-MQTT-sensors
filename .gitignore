@@ -3,4 +3,5 @@
 *.o
 paho_MQTT
 HTU21D_test
+test_MQTT
 
