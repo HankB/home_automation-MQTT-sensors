@@ -3,6 +3,8 @@
 
 // user code will beed to #include "MQTTClient.h"
 int init_MQTT(const char* address, const char* client_id);
+int publish_MQTT(const char* topic, const char* payload);
+void cleanup_MQTT(void);
 
 
 
