@@ -10,6 +10,9 @@ EXTRA_LIBS=-lwiringPi
 HTU21D_test: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS)
 
+test_MQTT: paho_MQTT.o t_paho_MQTT.o
+	$(CC) -o $@ paho_MQTT.o t_paho_MQTT.o $(CFLAGS) -lpaho-mqtt3c
+
 .PHONY: clean
 
 clean:
