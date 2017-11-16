@@ -26,6 +26,7 @@ int main(int argc, char** argv)
     }
     snprintf(topic_buf, BUFLEN, "home_automation/%s/familyroom/msg", host_buf);
     
+    // loop publish operation
     for(int i=0; i<50; i++)
     {
         snprintf(payload_buf, BUFLEN, "hello world %d", i);
@@ -33,8 +34,34 @@ int main(int argc, char** argv)
         printf("publish_MQTT():%d\n", rc);
         //sleep(1);
     }
-    publish_MQTT("home_automation/yggdrasil/familyroom/msg", "Hello World Again");
+    publish_MQTT(topic_buf, "Hello World Again");
     printf("publish_MQTT():%d\n", rc);
     cleanup_MQTT();
+    
+// try again after closing
+
+    if(gethostname(host_buf, BUFLEN))
+    {
+        perror("Error: ");
+        strncpy(host_buf, "somehost", BUFLEN);
+    }
+    snprintf(topic_buf, BUFLEN, "home_automation/%s/familyroom/msg", host_buf);
+    
+    // loop init/publish/cleanup operations
+    for(int i=0; i<5; i++)
+    {
+        rc = init_MQTT(ADDR, CLIENT_ID);
+        printf("init_MQTT():%d\n", rc);
+
+        snprintf(payload_buf, BUFLEN, "hello world again %d", i);
+        publish_MQTT(topic_buf, payload_buf);
+        printf("publish_MQTT():%d\n", rc);
+        cleanup_MQTT();
+        sleep(3);
+    }
+
+
+
+
     return 0;
 }
