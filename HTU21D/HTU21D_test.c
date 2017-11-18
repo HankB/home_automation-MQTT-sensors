@@ -9,7 +9,7 @@
 
 int main ()
 {
-	wiringPiSetup();
+	//wiringPiSetup();
 	int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
 	if ( 0 > fd )
 	{
