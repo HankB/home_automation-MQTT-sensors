@@ -18,10 +18,10 @@ int main (int argc, char** argv)
 {
 	int opt = 0;
 	int	interval=15;	// default
-	const char *	description = "";
-	const char * 	location = "";
-	//int rc;
+	const char *	description = 0;
+	const char * 	location = 0;
 
+// parse command line args
 	while ((opt = getopt(argc, argv, "i:l:d:")) != -1)
 	{
 		switch (opt)
@@ -62,7 +62,16 @@ int main (int argc, char** argv)
 			break;
 		}
 	}
-	printf("inteval:%d, location:%s, description:%s\n", interval, location, description);
+
+// validate command line arguments
+	if(location == 0 || description == 0)
+	{
+		fprintf(stderr, "location and description required.\n");
+		usage(argv[0]);
+	}
+
+	printf("interval:%d, location:%s, description:%s\n", interval, location, description);
+	
 	return 0;
 
 	int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
