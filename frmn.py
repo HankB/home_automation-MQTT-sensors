@@ -15,7 +15,8 @@ import paho.mqtt.client as mqtt
 import re
 import time
 
-version = 0.2
+version = 0.3
+verbose = 0
 
 """
 Functions related to communicating with TP-Link socket
@@ -79,17 +80,17 @@ topic = "home_automation/"+socket.gethostname()+"/basement/freezer_power"
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    if verbose: print("Connected with result code "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     # client.subscribe("$SYS/#")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    if verbose: print(msg.topic+" "+str(msg.payload))
 
 def on_publish(client, userdata, mid):
-    print("on_publish(", client, userdata, mid, ")")
+    if verbose: print("on_publish(", client, userdata, mid, ")")
 
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -108,7 +109,7 @@ client.loop_start()
 def publish_power(timestamp, I, V, W): # I, V, P => amps, volts. watts
     payload = "{0:12.0F}, {1:3.2F}, {2:3.1F}, {3:3.1F}" \
             .format(timestamp,float(I), float(V), float(W))
-    print("publishing", payload)
+    if verbose: print("publishing", payload)
     client.publish(topic,payload, qos=0, retain=True)    
 
 """ 
@@ -127,17 +128,23 @@ Application logic
 # Parse commandline arguments
 parser = argparse.ArgumentParser(description="Freezer monitor v" + str(version))
 host = parser.add_mutually_exclusive_group(required=True)
-host.add_argument("-t", "--target", metavar="<ip>", help="Target IP Address", type=validIP)
-host.add_argument("-n", "--name", metavar="<name>", help="Target host name", type=validHost)
+host.add_argument("-t", "--target", metavar="<ip>", 
+                    help="Target IP Address", type=validIP)
+host.add_argument("-n", "--name", metavar="<name>", 
+                    help="Target host name", type=validHost)
+parser.add_argument("-v", "--verbosity", 
+                    help="increase output verbosity",
+                    action="store_true")
 args = parser.parse_args()
+verbose = args.verbosity
 
 ip = args.target
 port = 9999
 if args.target is None:
-    print("Using ", args.name)
+    if verbose: print("Using ", args.name)
     addr = args.name
 else:
-    print("Using ", args.target)
+    if verbose: print("Using ", args.target)
     addr = args.target
     
 update_interval = 5		# minutes
@@ -148,16 +155,16 @@ while True:
     reply = sendrecv('{"emeter":{"get_realtime":{}}}')
     # parse reply which looks like
     # {"emeter":{"get_realtime":{"current":1.743814,"voltage":123.531411,"power":112.291943,"total":15.761000,"
-    print(reply)
+    if verbose: print(reply)
     fields=re.split('[:,]', reply) # isolate readings from the string
     if len(fields) != 12 or fields[0] != '{"emeter"':
-        print("Unexpected reply:\n   ", reply)
+        if verbose: print("Unexpected reply:\n   ", reply)
         current = voltage = power = 0
     else:
         current = fields[3]
         voltage = fields[5]
         power = fields[7]
 
-    print("c,v,p", current, voltage, power)
+    if verbose: print("c,v,p", current, voltage, power)
     publish_power(timestamp, current, voltage, power)
     delay_to_interval(update_interval)
