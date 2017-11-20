@@ -10,79 +10,79 @@
 
 void usage(const char* prog)
 {
-	fprintf(stderr, "%s -i <interval> -l location -d <description>\n", prog);
-	exit(-1);
+    fprintf(stderr, "%s -i <interval> -l location -d <description>\n", prog);
+    exit(-1);
 }
 
 int main (int argc, char** argv)
 {
-	int opt = 0;
-	int	interval=15;	// default
-	const char *	description = 0;
-	const char * 	location = 0;
+    int opt = 0;
+    int	interval=15;	// default
+    const char *	description = 0;
+    const char * 	location = 0;
 
-// parse command line args
-	while ((opt = getopt(argc, argv, "i:l:d:")) != -1)
+    // parse command line args
+    while ((opt = getopt(argc, argv, "i:l:d:")) != -1)
+    {
+	switch (opt)
 	{
-		switch (opt)
+	    case 'i':
+		interval=atoi(optarg);
+		if(interval == 0)
 		{
-		case 'i':
-			interval=atoi(optarg);
-			if(interval == 0)
-			{
-				fprintf(stderr, "got 0 decoding \"%s\"\n", optarg);
-				usage(argv[0]);
-			}
+		    fprintf(stderr, "got 0 decoding \"%s\"\n", optarg);
+		    usage(argv[0]);
+		}
+		break;
+	    case 'l':
+		location = optarg;
+		break;
+	    case 'd':
+		description = optarg;
+		break;
+	    case '?':
+		switch(optopt) {
+		    case 'i':
+			fprintf(stderr, "need a numeric argument for '-i'\n");
 			break;
-		case 'l':
-			location = optarg;
+		    case 'l':
+			fprintf(stderr, "need a string location for '-l'\n");
 			break;
-		case 'd':
-			description = optarg;
+		    case 'd':
+			fprintf(stderr, "need a string location for '-l'\n");
 			break;
-		case '?':
-			switch(optopt) {
-				case 'i':
-					fprintf(stderr, "need a numeric argument for '-i'\n");
-					break;
-				case 'l':
-					fprintf(stderr, "need a string location for '-l'\n");
-					break;
-				case 'd':
-					fprintf(stderr, "need a string location for '-l'\n");
-					break;
-				default:
-					fprintf(stderr, "How did we get here?\n");
-					break;
-			}
-			usage(argv[0]);	
-			break;		
-		default:
+		    default:
 			fprintf(stderr, "How did we get here?\n");
 			break;
 		}
+		usage(argv[0]);	
+		break;		
+	    default:
+		fprintf(stderr, "How did we get here?\n");
+		break;
 	}
+    }
 
-// validate command line arguments
-	if(location == 0 || description == 0)
-	{
-		fprintf(stderr, "location and description required.\n");
-		usage(argv[0]);
-	}
+    // validate command line arguments
+    if(location == 0 || description == 0)
+    {
+	fprintf(stderr, "location and description required.\n");
+	usage(argv[0]);
+    }
 
-	printf("interval:%d, location:%s, description:%s\n", interval, location, description);
-	
-	return 0;
+    printf("interval:%d, location:%s, description:%s\n", interval, location, description);
 
-	int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
-	if ( 0 > fd )
-	{
-		fprintf (stderr, "Unable to open I2C device: %s\n", strerror (errno));
-		exit (-1);
-	}
-	
-	printf("%5.2fF\n", getTemperature(fd)/5.0*9.0+32);
-	printf("%5.2f%%rh\n", getHumidity(fd));
-	
-	return 0;
+    return 0;
+
+    int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
+    if ( 0 > fd )
+    {
+	fprintf (stderr, "Unable to open I2C device: %s\n", strerror (errno));
+	exit (-1);
+    }
+
+    printf("%5.2fF\n", getTemperature(fd)/5.0*9.0+32);
+    printf("%5.2f%%rh\n", getHumidity(fd));
+
+    return 0;
 }
