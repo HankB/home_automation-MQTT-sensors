@@ -20,10 +20,11 @@ static MQTTClient_deliveryToken token;
  * Connect to an MQTT server
  * @param address is of the form "//tcp://<host>:port" (e.g "tcp://oak:1883")
  * @param client_id to use for the session
+ * @param keepalive in seconds
  * @retval 0 on success or one of the errors listed in MQTTClient.h or
  *  -1 to indicate that a previous session exists.
  */
-int init_MQTT(const char* address, const char* client_id)
+int init_MQTT(const char* address, const char* client_id, unsigned int keepalive)
 {
     int rc;
 
@@ -35,7 +36,7 @@ int init_MQTT(const char* address, const char* client_id)
 
     MQTTClient_create(&client, address, client_id,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts.keepAliveInterval = 20;
+    conn_opts.keepAliveInterval = keepalive;
     conn_opts.cleansession = 1;
 
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
@@ -65,7 +66,12 @@ int publish_MQTT(const char* topic, const char* payload)
     pubmsg.payloadlen = strlen(payload);
     pubmsg.qos = QOS;
     pubmsg.retained = 0;
-    MQTTClient_publishMessage(client, topic, &pubmsg, &token);
+    rc =MQTTClient_publishMessage(client, topic, &pubmsg, &token);
+    if(rc != 0)
+    {
+        fprintf(stderr, "%d=MQTTClient_publishMessage()\n", rc);
+        return rc;
+    }
     rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
     return rc;
 }
