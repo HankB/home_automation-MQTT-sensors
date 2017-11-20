@@ -19,6 +19,25 @@ static char host_buf[BUFLEN];
 #define ADDR        "tcp://oak:1883"
 #define CLIENT_ID   "ExampleClientPub"
 
+/** @brief
+ * Inspired by my Python function to synchronize various IoT
+ * sampling routines
+ 
+""" 
+Delay to the next minute interval some integral number of intervals
+from time zero.
+"""
+def delay_to_interval(minutes=15):
+    delay_sec = minutes*60 - int(time.time())%(minutes*60)
+    time.sleep(delay_sec)
+
+ */
+
+void delay_to_interval(unsigned int minutes) {
+    time_t  delay_sec = minutes*60 - time(0)%(minutes*60);
+    printf("Delay for %ld seconds\n", delay_sec);
+    sleep(delay_sec);
+}
 
 void usage(const char *prog)
 {
@@ -93,14 +112,14 @@ int main(int argc, char **argv)
     rc = init_MQTT(ADDR, CLIENT_ID);
     printf("init_MQTT():%d\n", rc);
 
-    //return 0;
-
     int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
     if (0 > fd) {
         fprintf(stderr, "Unable to open I2C device: %s\n",
                 strerror(errno));
         exit(-1);
     }
+
+    delay_to_interval(interval);
 
     while (1)                   // add logic for handling broken MQTT server connection
     {
@@ -110,11 +129,12 @@ int main(int argc, char **argv)
         printf("%5.2fF\n", temperature);
         printf("%5.2f%%rh\n", humididy);
 
-        snprintf(payload_buf, BUFLEN, "%d, %5.2f, %5.2f", time(0),
+        snprintf(payload_buf, BUFLEN, "%ld, %5.2f, %5.2f", time(0),
                  temperature, humididy);
         publish_MQTT(topic_buf, payload_buf);
         printf("publish_MQTT():%s\n", payload_buf);
-        sleep(15 * interval);
+
+        delay_to_interval(interval);
     }
     return 0;
 }
