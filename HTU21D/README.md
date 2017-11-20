@@ -47,3 +47,30 @@ intended license is but the Github project includes the following license:
 
 (reformatted for readability.)
 
+## Installation as an MQTT service
+
+`chmod +x temp_humidity.sh`\
+`cp temp_humidity.sh /home/hbarta/bin/temp_humidity.sh`\
+`mkdir /home/hbarta/temp_humudity`\
+`cp HTU21D_publish /home/hbarta/bin`\
+`sudo cp temp_mon.service /etc/systemd/system/`\
+`sudo systemctl start temp_mon`\
+`systemctl status temp_mon.service`
+
+and should result in
+
+* temp_mon.service
+    Loaded: loaded (/etc/systemd/system/temp_mon.service; disabled; vendor preset: enabled)
+    Active: active (running) since Mon 2017-11-20 15:14:01 CST; 6s ago
+    Main PID: 1878 (temp_humidity.s)
+    CGroup: /system.slice/temp_mon.service
+            |-1878 /bin/sh /home/hbarta/bin/temp_humidity.sh
+            `-1879 /home/hbarta/bin/HTU21D_publish -i 1 -l dining_room -d temp_humidity
+
+    Nov 20 15:14:01 polana systemd[1]: Started temp_mon.service.
+
+If the problem with i2c enable not surviving a reboot is solved, the following
+line should enable the service at boot.\
+`sudo systemctl enable temp_mon`
+
+
