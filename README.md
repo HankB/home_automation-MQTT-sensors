@@ -30,3 +30,4 @@ on any host since it uses network to collect information.)
 ### TODO
 
 * Make topic command line arguments.
+* recover from dropped MQTT server connection.
