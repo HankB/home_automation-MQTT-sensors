@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdbool.h>
 #include "wiringPi.h"
 #include "wiringPiI2C.h"
 #include "MQTTClient.h"
@@ -15,7 +16,7 @@
 static char topic_buf[BUFLEN];
 static char payload_buf[BUFLEN];
 static char host_buf[BUFLEN];
-
+static bool verbose = false;
 #define ADDR        "tcp://oak:1883"
 #define CLIENT_ID   "ExampleClientPub"
 
@@ -35,13 +36,13 @@ def delay_to_interval(minutes=15):
 
 void delay_to_interval(unsigned int minutes) {
     time_t  delay_sec = minutes*60 - time(0)%(minutes*60);
-    printf("Delay for %ld seconds\n", delay_sec);
+    if (verbose) printf("Delay for %ld seconds\n", delay_sec);
     sleep(delay_sec);
 }
 
 void usage(const char *prog)
 {
-    fprintf(stderr, "%s -i <interval> -l location -d <description>\n",
+    fprintf(stderr, "%s -i <interval> -l location -d <description> -v\n",
             prog);
     exit(-1);
 }
@@ -52,13 +53,14 @@ int main(int argc, char **argv)
     int interval = 15;          // default
     const char *description = 0;
     const char *location = 0;
+    int rc;
 
     if (gethostname(host_buf, BUFLEN)) {
         perror("Error: ");
         strncpy(host_buf, "somehost", BUFLEN);
     }
     // parse command line args
-    while ((opt = getopt(argc, argv, "i:l:d:")) != -1) {
+    while ((opt = getopt(argc, argv, "i:l:d:v")) != -1) {
         switch (opt) {
         case 'i':
             interval = atoi(optarg);
@@ -72,6 +74,9 @@ int main(int argc, char **argv)
             break;
         case 'd':
             description = optarg;
+            break;
+        case 'v':
+            verbose = true;
             break;
         case '?':
             switch (optopt) {
@@ -104,13 +109,11 @@ int main(int argc, char **argv)
 
     snprintf(topic_buf, BUFLEN, "home_automation/%s/%s/%s", host_buf,
              location, description);
-    printf("interval:%d, location:%s, description:%s\n%s\n", interval,
+    if (verbose) printf("interval:%d, location:%s, description:%s\n%s\n", interval,
            location, description, topic_buf);
 
-    int rc;
-
-    rc = init_MQTT(ADDR, CLIENT_ID);
-    printf("init_MQTT():%d\n", rc);
+    rc = init_MQTT(ADDR, CLIENT_ID, (interval+1)*60);
+    if (verbose) printf("init_MQTT():%d\n", rc);
 
     int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
     if (0 > fd) {
@@ -126,13 +129,13 @@ int main(int argc, char **argv)
         float temperature = getTemperature(fd) / 5.0 * 9.0 + 32;
         float humididy = getHumidity(fd);
 
-        printf("%5.2fF\n", temperature);
-        printf("%5.2f%%rh\n", humididy);
+        if (verbose) printf("%5.2fF\n", temperature);
+        if (verbose) printf("%5.2f%%rh\n", humididy);
 
         snprintf(payload_buf, BUFLEN, "%ld, %5.2f, %5.2f", time(0),
                  temperature, humididy);
-        publish_MQTT(topic_buf, payload_buf);
-        printf("publish_MQTT():%s\n", payload_buf);
+        rc = publish_MQTT(topic_buf, payload_buf);
+        if (verbose) printf("%d = publish_MQTT():%s\n", rc, payload_buf);
 
         delay_to_interval(interval);
     }
