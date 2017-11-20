@@ -5,4 +5,5 @@ paho_MQTT
 HTU21D_test
 HTU21D_publish
 test_MQTT
+*~
 
