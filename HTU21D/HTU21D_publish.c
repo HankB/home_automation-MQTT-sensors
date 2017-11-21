@@ -18,7 +18,9 @@ static char payload_buf[BUFLEN];
 static char host_buf[BUFLEN];
 static bool verbose = false;
 #define ADDR        "tcp://oak:1883"
-#define CLIENT_ID   "ExampleClientPub"
+#define CLIENT_ID   "HA_%ld"
+#define CLIENTLEN    20
+static char client_ID[CLIENTLEN];
 
 /** @brief
  * Inspired by my Python function to synchronize various IoT
@@ -112,7 +114,8 @@ int main(int argc, char **argv)
     if (verbose) printf("interval:%d, location:%s, description:%s\n%s\n", interval,
            location, description, topic_buf);
 
-    rc = init_MQTT(ADDR, CLIENT_ID, (interval+1)*60);
+    snprintf(client_ID, CLIENTLEN, CLIENT_ID, random());
+    rc = init_MQTT(ADDR, client_ID, (interval+1)*60);
     if (verbose) printf("init_MQTT():%d\n", rc);
 
     int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
