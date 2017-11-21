@@ -1,12 +1,12 @@
 [Service]
-WorkingDirectory=/home/hbarta/temp_humudity
-ExecStart=/home/hbarta/bin/temp_humidity.sh
+WorkingDirectory=/home/pi/temp_humudity
+ExecStart=/home/pi/bin/temp_humidity.sh
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=temphumid
-User=hbarta
-Group=hbarta
+User=pi
+Group=pi
 [Install]
 WantedBy=multi-user.target
 
