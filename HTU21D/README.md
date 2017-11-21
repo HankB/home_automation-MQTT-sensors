@@ -8,7 +8,7 @@ and is licensed under MIT.
 
 ## MQTT
 
-The original MQTT code came from ian example on
+The original MQTT code came from an example on
 https://www.eclipse.org/paho/clients/c/.  It is not clear what the
 intended license is but the Github project includes the following license:
 
@@ -46,6 +46,18 @@ intended license is but the Github project includes the following license:
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 (reformatted for readability.)
+
+## Building MQTT libraries
+(from the link above https://www.eclipse.org/paho/clients/c/)
+`git clone https://github.com/eclipse/paho.mqtt.c.git`
+
+`sudo apt install libssl-dev`
+
+`cd paho.mqtt.c/`
+
+`make`
+
+`sudo make install`
 
 ## Installation as an MQTT service
 
