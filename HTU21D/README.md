@@ -49,12 +49,18 @@ intended license is but the Github project includes the following license:
 
 ## Installation as an MQTT service
 
-`chmod +x temp_humidity.sh`\
-`cp temp_humidity.sh /home/hbarta/bin/temp_humidity.sh`\
-`mkdir /home/hbarta/temp_humudity`\
-`cp HTU21D_publish /home/hbarta/bin`\
-`sudo cp temp_mon.service /etc/systemd/system/`\
-`sudo systemctl start temp_mon`\
+`chmod +x temp_humidity.sh`
+
+`cp temp_humidity.sh /home/hbarta/bin/temp_humidity.sh`
+
+`mkdir /home/hbarta/temp_humudity`
+
+`cp HTU21D_publish /home/hbarta/bin`
+
+`sudo cp temp_mon.service /etc/systemd/system/`
+
+`sudo systemctl start temp_mon`
+
 `systemctl status temp_mon.service`
 
 and should result in
