@@ -114,6 +114,7 @@ int main(int argc, char **argv)
     if (verbose) printf("interval:%d, location:%s, description:%s\n%s\n", interval,
            location, description, topic_buf);
 
+    srandom(time(0));
     snprintf(client_ID, CLIENTLEN, CLIENT_ID, random());
     rc = init_MQTT(ADDR, client_ID, (interval+1)*60);
     if (verbose) printf("init_MQTT():%d\n", rc);
