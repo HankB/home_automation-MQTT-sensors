@@ -1,5 +1,5 @@
 [Service]
-WorkingDirectory=/home/pi/temp_humudity
+WorkingDirectory=/home/pi/temp_humidity
 ExecStart=/home/pi/bin/temp_humidity.sh
 Restart=always
 StandardOutput=syslog
