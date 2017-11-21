@@ -34,8 +34,13 @@ int init_MQTT(const char* address, const char* client_id, unsigned int keepalive
         return MQTTCLIENT_FAILURE;
     }
 
-    MQTTClient_create(&client, address, client_id,
+    rc = MQTTClient_create(&client, address, client_id,
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    if(rc != 0)
+    {
+        fprintf(stderr, "return status MQTTClient_create() %d\n", rc);
+	return(rc);
+    }
     conn_opts.keepAliveInterval = keepalive;
     conn_opts.cleansession = 1;
 
@@ -53,7 +58,6 @@ int init_MQTT(const char* address, const char* client_id, unsigned int keepalive
  * @retval 0 on success or one of the errors listed in MQTTClient.h or
  *  -1 to indicate that a previous session exists.
  * 
- * @TODO check result of MQTTClient_publishMessage()
  * @TODO determine if MQTTClient_waitForCompletion() is needed 
  * when QOS == 0
  */
