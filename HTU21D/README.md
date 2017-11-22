@@ -46,8 +46,7 @@ intended license is but the Github project includes the following license:
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 (reformatted for readability.)
-
-## Building MQTT libraries
+## Build MQTT libraries
 (from the link above https://www.eclipse.org/paho/clients/c/)
 `git clone https://github.com/eclipse/paho.mqtt.c.git`
 
@@ -59,15 +58,34 @@ intended license is but the Github project includes the following license:
 
 `sudo make install`
 
+## Build executable
+`sudo apt install wiringpi`
+
+`make HTU21D_test`  # app to test HTU21D readings.
+
+`make test_MQTT`   # app to test MQTT publishing
+
+`make`             # build 
 ## Installation as an MQTT service
+Modify temp_humidity.sh, temp_mon.service as needed for
+* user name (pi vs. hbarta)
+* location (temp_humidity.sh)
+* descriotion (temp_humidity.sh)
+
 
 `chmod +x temp_humidity.sh`
 
 `cp temp_humidity.sh /home/hbarta/bin/temp_humidity.sh`
+   or
+`cp temp_humidity.sh /home/pi/bin/temp_humidity.sh`
 
-`mkdir /home/hbarta/temp_humudity`
+`mkdir /home/hbarta/temp_humidity`
+   or
+`mkdir /home/pi/temp_humidity`
 
 `cp HTU21D_publish /home/hbarta/bin`
+   or
+`cp HTU21D_publish /home/pi/bin`
 
 `sudo cp temp_mon.service /etc/systemd/system/`
 
