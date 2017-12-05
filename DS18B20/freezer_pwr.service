@@ -1,0 +1,12 @@
+[Service]
+WorkingDirectory=/home/hbarta/freezer
+ExecStart=/home/hbarta/bin/frmn.py
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=freezer
+User=hbarta
+Group=hbarta
+[Install]
+WantedBy=multi-user.target
+
