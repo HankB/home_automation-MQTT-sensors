@@ -1,4 +1,5 @@
 # home_automation-MQTT-sensors
+##### ssh://git@oak:10022/HankB/home_automation-MQTT-sensors.git
 
 Various scripts and programs to read sensors and publish to the MQTT server 
 on oak. Most of these are intended to execute on a Raspberry Pi and read
