@@ -46,6 +46,7 @@ intended license is but the Github project includes the following license:
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 (reformatted for readability.)
+# Usage
 ## Build MQTT libraries
 (from the link above https://www.eclipse.org/paho/clients/c/)
 `git clone https://github.com/eclipse/paho.mqtt.c.git`
@@ -74,7 +75,7 @@ intended license is but the Github project includes the following license:
 Modify temp_humidity.sh, temp_mon.service as needed for
 * user name (pi vs. hbarta)
 * location (temp_humidity.sh)
-* descriotion (temp_humidity.sh)
+* description (temp_humidity.sh)
 
 
 `chmod +x temp_humidity.sh`
@@ -110,7 +111,8 @@ and should result in
     Nov 20 15:14:01 polana systemd[1]: Started temp_mon.service.
 
 If the problem with i2c enable not surviving a reboot is solved, the following
-line should enable the service at boot.\
+line should enable the service at boot.
+
 `sudo systemctl enable temp_mon`
 
 
