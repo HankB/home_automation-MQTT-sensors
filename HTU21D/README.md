@@ -58,6 +58,10 @@ intended license is but the Github project includes the following license:
 
 `sudo make install`
 
+## Requirements
+* MQTT API libraries (See above)
+* `sudo apt install git vim libssl-dev wiringpi`
+
 ## Build executable
 `sudo apt install wiringpi`
 
