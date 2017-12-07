@@ -30,5 +30,7 @@ on any host since it uses network to collect information.)
 
 ### TODO
 
-* Make topic command line arguments.
-* recover from dropped MQTT server connection.
+* Done - Make topic command line arguments.
+* <s>Recover from dropped MQTT server connection.</s>
+* Open/Close connection for each sample to send.
+* Investigate switch to libmosquitto
