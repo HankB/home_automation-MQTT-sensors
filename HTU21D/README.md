@@ -47,30 +47,17 @@ intended license is but the Github project includes the following license:
 
 (reformatted for readability.)
 # Usage
-## Build MQTT libraries
-(from the link above https://www.eclipse.org/paho/clients/c/)
-`git clone https://github.com/eclipse/paho.mqtt.c.git`
-
-`sudo apt install libssl-dev`
-
-`cd paho.mqtt.c/`
-
-`make`
-
-`sudo make install`
-
 ## Requirements
-* MQTT API libraries (See above)
-* `sudo apt install git vim libssl-dev wiringpi`
+* Mosquitto library
+* `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
 
 ## Build executable
-`sudo apt install wiringpi`
 
 `make HTU21D_test`  # app to test HTU21D readings.
 
 `make test_MQTT`   # app to test MQTT publishing
 
-`make`             # build 
+`make`             # build application
 ## Installation as an MQTT service
 Modify temp_humidity.sh, temp_mon.service as needed for
 * user name (pi vs. hbarta)
