@@ -1,4 +1,3 @@
-#include "MQTTClient.h"
 #include "MQTT.h"
 #include <unistd.h>
 #include <stdio.h>
@@ -11,15 +10,15 @@ static char     topic_buf[BUFLEN];
 static char     payload_buf[BUFLEN];
 static char     host_buf[BUFLEN];
 
-#define ADDR        "tcp://oak:1883"
+#define HOST        "yggdrasil"
 #define CLIENT_ID   "AnotherClient"
-
 #define KEEPALIVE	60
+
 int main(int argc, char** argv)
 {
     int     rc;
 
-    rc = init_MQTT(ADDR, CLIENT_ID, KEEPALIVE);
+    rc = init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
     printf("init_MQTT():%d\n", rc);
 
     if(gethostname(host_buf, BUFLEN))
@@ -46,7 +45,7 @@ int main(int argc, char** argv)
     // loop init/publish/cleanup operations
     for(int i=0; i<5; i++)
     {
-        rc = init_MQTT(ADDR, CLIENT_ID,  KEEPALIVE);
+        rc = init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
         printf("init_MQTT():%d\n", rc);
 
         snprintf(payload_buf, BUFLEN, "hello world again %d", i);
@@ -62,7 +61,7 @@ int main(int argc, char** argv)
 
     for(int i=0; i<5; i++)
     {
-        init_MQTT(ADDR, CLIENT_ID,  KEEPALIVE);
+        init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
         snprintf(payload_buf, BUFLEN, "hello world again %d", i);
         publish_MQTT(topic_buf, payload_buf);
         cleanup_MQTT();

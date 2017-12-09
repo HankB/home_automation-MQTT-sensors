@@ -1,6 +1,6 @@
 #include "string.h"
 #include "MQTTClient.h"
-#include "paho_MQTT.h"
+#include "MQTT.h"
 
 #define CLIENTID    "ExampleClientPub"
 #define QOS         0
@@ -14,6 +14,8 @@ static MQTTClient_deliveryToken token;
  * It assumes that only one connection will be established
  * at any given time and will return an error (-1 = MQTTCLIENT_FAILURE)
  * if a second connection is attempted before cleaning up the first.
+ * 
+ * This file implements via the paho MQTT library.
  */
 
 /** @brief

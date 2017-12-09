@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include "wiringPi.h"
 #include "wiringPiI2C.h"
-#include "MQTTClient.h"
-#include "paho_MQTT.h"
+//#include "MQTTClient.h"
+#include "MQTT.h"
 #
 #include "HTU21D.h"
 
@@ -17,7 +17,9 @@ static char topic_buf[BUFLEN];
 static char payload_buf[BUFLEN];
 static char host_buf[BUFLEN];
 static bool verbose = false;
-#define ADDR        "tcp://oak:1883"
+
+// TODO add host as command line argument
+#define HOST        "oak"
 #define CLIENT_ID   "HA_%ld"
 #define CLIENTLEN    20
 static char client_ID[CLIENTLEN];
@@ -114,9 +116,10 @@ int main(int argc, char **argv)
     if (verbose) printf("interval:%d, location:%s, description:%s\n%s\n", interval,
            location, description, topic_buf);
 
+// TODO: make client ID use PID and host name
     srandom(time(0));
     snprintf(client_ID, CLIENTLEN, CLIENT_ID, random());
-    rc = init_MQTT(ADDR, client_ID, (interval+1)*60);
+    rc = init_MQTT(HOST, 0, client_ID, 60);
     if (verbose) printf("init_MQTT():%d\n", rc);
 
     int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
