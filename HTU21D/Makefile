@@ -14,9 +14,6 @@ HTU21D_publish: $(PUB_OBJ)
 HTU21D_test: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS)
 
-test_paho_MQTT: paho_MQTT.o t_paho_MQTT.o
-	$(CC) -o $@ paho_MQTT.o t_paho_MQTT.o $(CFLAGS) -lpaho-mqtt3c
-
 test_MQTT: mosquitto_MQTT.o t_mosquitto_MQTT.o
 	$(CC) -o $@ mosquitto_MQTT.o t_mosquitto_MQTT.o $(CFLAGS) -lmosquitto
 
