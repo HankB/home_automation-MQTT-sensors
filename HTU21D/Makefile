@@ -3,19 +3,22 @@ CFLAGS=-I. -Wall
 DEPS = 
 OBJ = HTU21D.o HTU21D_test.o
 EXTRA_LIBS=-lwiringPi
-PUB_OBJ = HTU21D.o HTU21D_publish.o paho_MQTT.o
+PUB_OBJ = HTU21D.o HTU21D_publish.o mosquitto_MQTT.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 HTU21D_publish: $(PUB_OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS) -lpaho-mqtt3c
+	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS) -lmosquitto
 
 HTU21D_test: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS)
 
-test_MQTT: paho_MQTT.o t_paho_MQTT.o
+test_paho_MQTT: paho_MQTT.o t_paho_MQTT.o
 	$(CC) -o $@ paho_MQTT.o t_paho_MQTT.o $(CFLAGS) -lpaho-mqtt3c
+
+test_MQTT: mosquitto_MQTT.o t_mosquitto_MQTT.o
+	$(CC) -o $@ mosquitto_MQTT.o t_mosquitto_MQTT.o $(CFLAGS) -lmosquitto
 
 .PHONY: clean
 

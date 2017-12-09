@@ -1,5 +1,5 @@
 #include "MQTTClient.h"
-#include "paho_MQTT.h"
+#include "MQTT.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
