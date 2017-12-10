@@ -46,6 +46,7 @@ int init_MQTT(const char* host, unsigned int port, const char* client_id, unsign
 	saved_keepalive = keepalive;
 
     mosquitto_lib_init();
+    
     m = mosquitto_new(client_id, true, 0);
     if(m == NULL)
 		return errno;
@@ -66,19 +67,19 @@ int publish_MQTT(const char* topic, const char* payload)
     
 	rc = mosquitto_connect(m, saved_host, saved_port, saved_keepalive);
 	if(rc) {
-		fprintf(stderr,"mosquitto_connect() err %d\n", rc);
+		fprintf(stderr,"mosquitto_connect() %d, %d %s\n", rc, errno, mosquitto_strerror(rc));
 	} else {
 		rc = mosquitto_publish(m, NULL, topic,
 								strlen(payload), payload, 0, true);
 		if(rc) {
-			fprintf(stderr,"mosquitto_publish() err %d\n", rc);
+			fprintf(stderr,"mosquitto_publish() %d %d %s\n", rc, errno, mosquitto_strerror(rc));
 		} else {
 			printf("published\n");
 			/* Seems redundant doesn't prevent apparent message drop
 			 * unlike trhe usleep() call
+			 * */
 			rc = mosquitto_loop(m, 1000, 1);
 			printf("mosquitto_loop %d\n", rc);
-			* */
 			usleep(1);
 		}
 
@@ -97,5 +98,10 @@ void cleanup_MQTT(void)
 {
     mosquitto_destroy(m);
     mosquitto_lib_cleanup();
-    m = 0;
+    m = NULL;
+    if(saved_host) {
+		free(saved_host);
+		saved_host = NULL;
+	}
+    
 }
