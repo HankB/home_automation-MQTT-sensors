@@ -17,9 +17,10 @@ static char topic_buf[BUFLEN];
 static char payload_buf[BUFLEN];
 static char host_buf[BUFLEN];
 static bool verbose = false;
+static bool testing = false;
 
 // TODO add host as command line argument
-#define HOST        "oak"
+#define HOST        "yggdrasil"
 #define CLIENT_ID   "HA_%ld"
 #define CLIENTLEN    20
 static char client_ID[CLIENTLEN];
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
         strncpy(host_buf, "somehost", BUFLEN);
     }
     // parse command line args
-    while ((opt = getopt(argc, argv, "i:l:d:v")) != -1) {
+    while ((opt = getopt(argc, argv, "i:l:d:v:t")) != -1) {
         switch (opt) {
         case 'i':
             interval = atoi(optarg);
@@ -81,6 +82,9 @@ int main(int argc, char **argv)
             break;
         case 'v':
             verbose = true;
+            break;
+        case 't':
+            testing = true;
             break;
         case '?':
             switch (optopt) {
@@ -129,7 +133,8 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
-    delay_to_interval(interval);
+    if(!testing)
+        delay_to_interval(interval);
 
     while (1)                   // add logic for handling broken MQTT server connection
     {
@@ -143,8 +148,11 @@ int main(int argc, char **argv)
                  temperature, humididy);
         rc = publish_MQTT(topic_buf, payload_buf);
         if (verbose) printf("%d = publish_MQTT():%s\n", rc, payload_buf);
-
-        delay_to_interval(interval);
+		
+        if(testing)
+            sleep(1);
+        else
+            delay_to_interval(interval);
     }
     return 0;
 }
