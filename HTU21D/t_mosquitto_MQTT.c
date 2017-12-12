@@ -29,12 +29,12 @@ int main(int argc, char** argv)
     snprintf(topic_buf, BUFLEN, "home_automation/%s/familyroom/msg", host_buf);
     
     // loop publish operation
-    for(int i=0; i<1; i++)
+    for(int i=0; i<500; i++)
     {
         snprintf(payload_buf, BUFLEN, "hello world %d", i);
         rc = publish_MQTT(topic_buf, payload_buf);
         printf("publish_MQTT():%d\n", rc);
-        //sleep(1);
+        sleep(1);
     }
     rc = publish_MQTT(topic_buf, "Hello World Again");
     printf("publish_MQTT():%d\n", rc);

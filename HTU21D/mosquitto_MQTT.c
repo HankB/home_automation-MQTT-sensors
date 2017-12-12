@@ -17,6 +17,25 @@ static struct mosquitto *m;
 static char*  saved_host;
 static int 	  saved_port;
 static int    saved_keepalive;
+static int	  publish_count;
+
+/** @brief callback when a message publish is complete
+ * @param data for this connection
+ * @param (unused user data)
+ * @param message ID - managed by libmosquitto
+ * 
+ * Publish complete - close connection (will cause 
+ * mosquitto_loop_forever() to return.
+ * */
+static void on_publish(struct mosquitto *m, void *obj, int mid) {
+	fprintf(stderr, "Received PUBACK for message %d, disconnecting\n", mid);
+	int rc = mosquitto_disconnect(m);
+	if (rc) {
+		fprintf(stderr,"mosquitto_disconnect() err %d %d %s \n", rc, errno, mosquitto_strerror(rc));
+	}
+}
+
+
 
 /** @brief
  * Initialize the mosquitto library and save copies of the parameters used
@@ -50,6 +69,9 @@ int init_MQTT(const char* host, unsigned int port, const char* client_id, unsign
     m = mosquitto_new(client_id, true, 0);
     if(m == NULL)
 		return errno;
+	
+	mosquitto_publish_callback_set(m, on_publish);
+		
     return 0;
 }
 
@@ -67,28 +89,26 @@ int publish_MQTT(const char* topic, const char* payload)
     
 	rc = mosquitto_connect(m, saved_host, saved_port, saved_keepalive);
 	if(rc) {
-		fprintf(stderr,"mosquitto_connect() %d, %d %s\n", rc, errno, mosquitto_strerror(rc));
+		fprintf(stderr,"mosquitto_connect() %s %d, %d %s\n", saved_host, rc, errno, mosquitto_strerror(rc));
 	} else {
 		rc = mosquitto_publish(m, NULL, topic,
 								strlen(payload), payload, 0, true);
 		if(rc) {
 			fprintf(stderr,"mosquitto_publish() %d %d %s\n", rc, errno, mosquitto_strerror(rc));
 		} else {
-			printf("published\n");
-			/* Seems redundant doesn't prevent apparent message drop
-			 * unlike trhe usleep() call
-			 * */
-			rc = mosquitto_loop(m, 1000, 1);
-			printf("mosquitto_loop %d\n", rc);
-			usleep(1);
+			printf("published %d\n", ++publish_count);
+			rc = mosquitto_loop_forever(m, 1000, 1);
+			printf("mosquitto_loop_forever() %d\n", rc);
 		}
 
+		/*
 		rc = mosquitto_disconnect(m);
 		if(rc) {
 			perror("mosquitto_disconnect");
 		} else {
 			printf("disconnected\n");
 		}
+		*/
 	}
 
     return rc;
