@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-Script to fetch current weather from Accuweather, parse it and submit to
+Script to fetch current weather from OpenWeatherMap, parse it and submit to
 the MQTT broker on oak.
 Command line arguments
 -z --zipcode <zip code>
@@ -8,7 +8,7 @@ Command line arguments
 -k --apikey API kep provided by accuweather
 -t --test simulate with test response
 
-All arguments required
+All arguments except '-t' required
 '''
 import argparse
 import urllib.request
