@@ -35,8 +35,6 @@ static void on_publish(struct mosquitto *m, void *obj, int mid) {
 	}
 }
 
-
-
 /** @brief
  * Initialize the mosquitto library and save copies of the parameters used
  * to open a connection.
@@ -100,15 +98,6 @@ int publish_MQTT(const char* topic, const char* payload)
 			rc = mosquitto_loop_forever(m, 1000, 1);
 			printf("mosquitto_loop_forever() %d\n", rc);
 		}
-
-		/*
-		rc = mosquitto_disconnect(m);
-		if(rc) {
-			perror("mosquitto_disconnect");
-		} else {
-			printf("disconnected\n");
-		}
-		*/
 	}
 
     return rc;
