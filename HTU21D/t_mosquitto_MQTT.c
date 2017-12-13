@@ -17,6 +17,7 @@ static char     host_buf[BUFLEN];
 int main(int argc, char** argv)
 {
     int     rc;
+    int		i;
 
     rc = init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
     printf("init_MQTT():%d\n", rc);
@@ -29,12 +30,12 @@ int main(int argc, char** argv)
     snprintf(topic_buf, BUFLEN, "home_automation/%s/familyroom/msg", host_buf);
     
     // loop publish operation
-    for(int i=0; i<500; i++)
+    for(i=0; i<1000; i++)
     {
         snprintf(payload_buf, BUFLEN, "hello world %d", i);
         rc = publish_MQTT(topic_buf, payload_buf);
         printf("publish_MQTT():%d\n", rc);
-        sleep(1);
+        //sleep(1);
     }
     rc = publish_MQTT(topic_buf, "Hello World Again");
     printf("publish_MQTT():%d\n", rc);
@@ -42,8 +43,8 @@ int main(int argc, char** argv)
     
 // try again after closing
 
-    // loop init/publish/cleanup operations
-    for(int i=0; i<5; i++)
+    // loop init/publish/cleanup operations back to back as fast as possible
+    for(i=0; i<1000; i++)
     {
         rc = init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
         printf("init_MQTT():%d\n", rc);
@@ -59,13 +60,12 @@ int main(int argc, char** argv)
     int start = time(0);
 #define COUNT 20
 
-    for(int i=0; i<5; i++)
+    for(i=0; i<COUNT; i++)
     {
         init_MQTT(HOST, 0, CLIENT_ID, KEEPALIVE);
         snprintf(payload_buf, BUFLEN, "hello world again %d", i);
         publish_MQTT(topic_buf, payload_buf);
         cleanup_MQTT();
-	sleep(1);
     }
 
     int elapsed = time(0)-start;
