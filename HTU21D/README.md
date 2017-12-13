@@ -15,7 +15,14 @@ library is available via a Debian package.)
 # Usage
 ## Requirements
 * Mosquitto library
-* `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
+
+    `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
+    
+    (vim technically not required if you prefer a different editor. ;) )
+    
+* Enable i2c 
+
+    `sudo raspi-config` and look for "Interfacing Options"
 
 ## Build executable
 
