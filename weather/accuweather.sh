@@ -11,7 +11,6 @@ fi
 key=$1
 
 shift
-echo $#
 
 if [ $# -eq 0 ]
 then
