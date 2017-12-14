@@ -87,5 +87,5 @@ print(  timestamp,
         cont['RelativeHumidity'], 
         cont['Wind']['Direction']['Degrees'], 
         cont['Wind']['Speed']['Imperial']['Value'],
-        cont['WeatherText'], sep=', ')
+        cont['WeatherText'], sep=', ', end='')
 sys.exit(0)
