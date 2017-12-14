@@ -27,4 +27,4 @@ HOSTNAME=`hostname`
 PATH=${HOME}/bin:$PATH
 
 accuweather.py -l 26289_PC -k $key -v 2>>/tmp/accuweather.txt | \
-mosquitto_pub -s -t home_automation/$HOSTNAME/accuweather/weather
+mosquitto_pub -s -t home_automation/$HOSTNAME/accuweather/weather -h $host
