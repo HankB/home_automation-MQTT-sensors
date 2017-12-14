@@ -41,7 +41,7 @@ def delay_to_interval(minutes=15):
 
 void delay_to_interval(unsigned int minutes) {
     time_t  delay_sec = minutes*60 - time(0)%(minutes*60);
-    if (verbose) printf("Delay for %ld seconds\n", delay_sec);
+    if (verbose) fprintf(stderr,"Delay for %ld seconds\n", delay_sec);
     sleep(delay_sec);
 }
 
@@ -117,14 +117,14 @@ int main(int argc, char **argv)
 
     snprintf(topic_buf, BUFLEN, "home_automation/%s/%s/%s", host_buf,
              location, description);
-    if (verbose) printf("interval:%d, location:%s, description:%s\n%s\n", interval,
+    if (verbose) fprintf(stderr,"interval:%d, location:%s, description:%s\n%s\n", interval,
            location, description, topic_buf);
 
 // TODO: make client ID use PID and host name
     srandom(time(0));
     snprintf(client_ID, CLIENTLEN, CLIENT_ID, random());
     rc = init_MQTT(HOST, 0, client_ID, 60);
-    if (verbose) printf("init_MQTT():%d\n", rc);
+    if (verbose) fprintf(stderr,"init_MQTT():%d\n", rc);
 
     int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
     if (0 > fd) {
@@ -141,13 +141,13 @@ int main(int argc, char **argv)
         float temperature = getTemperature(fd) / 5.0 * 9.0 + 32;
         float humididy = getHumidity(fd);
 
-        if (verbose) printf("%5.2fF\n", temperature);
-        if (verbose) printf("%5.2f%%rh\n", humididy);
+        if (verbose) fprintf(stderr,"%5.2fF\n", temperature);
+        if (verbose) fprintf(stderr, "%5.2f%%rh\n", humididy);
 
         snprintf(payload_buf, BUFLEN, "%ld, %5.2f, %5.2f", time(0),
                  temperature, humididy);
         rc = publish_MQTT(topic_buf, payload_buf);
-        if (verbose) printf("%d = publish_MQTT():%s\n", rc, payload_buf);
+        if (verbose) fprintf(stderr,"%d = publish_MQTT():%s\n", rc, payload_buf);
 		
         if(testing)
             sleep(1);
