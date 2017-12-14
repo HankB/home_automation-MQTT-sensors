@@ -4,9 +4,13 @@ DEPS =
 EXTRA_LIBS=-lwiringPi
 OBJ = HTU21D_publish.o mosquitto_MQTT.o HTU21D.o
 TEST_OBJ = HTU21D.o HTU21D_test.o
+REPORT_OBJ = HTU21D.o HTU21D_report.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
+
+HTU21D_report: $(REPORT_OBJ)
+	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS)
 
 HTU21D_publish: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(EXTRA_LIBS) -lmosquitto
@@ -20,4 +24,5 @@ test_MQTT: mosquitto_MQTT.o t_mosquitto_MQTT.o
 .PHONY: clean
 
 clean:
-	rm -f $(OBJ) $(TEST_OBJ) t_mosquitto_MQTT.o HTU21D_test test_MQTT HTU21D_publish
+	rm -f $(OBJ) $(TEST_OBJ) $(REPORT_OBJ) t_mosquitto_MQTT.o HTU21D_test\
+			test_MQTT HTU21D_publish
