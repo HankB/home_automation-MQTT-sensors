@@ -10,7 +10,6 @@
 
 int main ()
 {
-	//wiringPiSetup();
 	int fd = wiringPiI2CSetup(HTU21D_I2C_ADDR);
 	if ( 0 > fd )
 	{
@@ -19,8 +18,9 @@ int main ()
 	}
 	
 	for(;;) {
-		printf("%5.2fF\n", getTemperature(fd)/5.0*9.0+32);
-		printf("%5.2f%%rh\n", getHumidity(fd));
+		printf("%5.2f°F %5.2f%%\n",
+                getTemperature(fd)/5.0*9.0+32,
+                getHumidity(fd));
 		usleep(10);
 	}
 	
