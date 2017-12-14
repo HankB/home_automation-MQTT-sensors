@@ -52,6 +52,7 @@ int init_MQTT(const char* host, unsigned int port, const char* client_id, unsign
 	if(host == NULL)
 		return EINVAL;
 	
+    fprintf(stderr, "strlen(%s)\n", host);
 	saved_host = malloc(strlen(host)+1);
 	if(saved_host == NULL)
 		return ENOMEM;
@@ -91,24 +92,16 @@ int publish_MQTT(const char* topic, const char* payload)
 	if(rc) {
 		fprintf(stderr,"mosquitto_connect() %s %d, %d %s\n", saved_host, rc, errno, mosquitto_strerror(rc));
 	} else {
+        fprintf(stderr, "strlen(%s)\n", payload);
 		rc = mosquitto_publish(m, NULL, topic,
 								strlen(payload), payload, 0, true);
 		if(rc) {
 			fprintf(stderr,"mosquitto_publish() %d %d %s\n", rc, errno, mosquitto_strerror(rc));
 		} else {
-			printf("published %d\n", ++publish_count);
+			fprintf(stderr,"published %d\n", ++publish_count);
 			rc = mosquitto_loop_forever(m, 1000, 1);
-			printf("mosquitto_loop_forever() %d\n", rc);
+			fprintf(stderr,"mosquitto_loop_forever() %d\n", rc);
 		}
-
-		/*
-		rc = mosquitto_disconnect(m);
-		if(rc) {
-			perror("mosquitto_disconnect");
-		} else {
-			printf("disconnected\n");
-		}
-		*/
 	}
 
     return rc;
