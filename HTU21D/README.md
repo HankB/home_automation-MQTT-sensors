@@ -12,13 +12,21 @@ The Mosquitto library is presently used in the code. (The paho-MQTT library
 was used previously but had to be built on each host whereas the Mosquitto
 library is available via a Debian package.)
 
+Present work involves a pivot to using `mosquitto_pub` to publish and having
+the sensor program read the values and then write a formatted payload to stdout.
+A shell script suitable for execution by cron will be provided to run the
+sensor program and pipe the output to `mosquitto_pub`.
+
 # Usage
 ## Requirements
 * Mosquitto library
 
+### To build
     `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
     
-    (vim technically not required if you prefer a different editor. ;) )
+The sensor program itself does not need libmosquitto packages. They are only
+required for the MQTT related preograms which are left here only for historic
+reasons. (vim technically not required if you prefer a different editor. ;) )
     
 * Enable i2c 
 
@@ -31,7 +39,10 @@ library is available via a Debian package.)
 `make test_MQTT`   # app to test MQTT publishing
 
 `make`             # build application
+## Installation
+TODO: Install the mosquitto client and the executables
 ## Installation as a systemd service
+#### This is deprecated as the new strategy is to run via cron.
 Modify temp_humidity.sh, temp_mon.service as needed for
 * user name (pi vs. hbarta)
 * location (temp_humidity.sh)
