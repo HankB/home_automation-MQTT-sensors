@@ -35,8 +35,6 @@ static void on_publish(struct mosquitto *m, void *obj, int mid) {
 	}
 }
 
-
-
 /** @brief
  * Initialize the mosquitto library and save copies of the parameters used
  * to open a connection.

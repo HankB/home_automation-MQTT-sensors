@@ -15,7 +15,14 @@ library is available via a Debian package.)
 # Usage
 ## Requirements
 * Mosquitto library
-* `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
+
+    `sudo apt install git vim libssl-dev wiringpi libmosquitto-dev libmosquitto1`
+    
+    (vim technically not required if you prefer a different editor. ;) )
+    
+* Enable i2c 
+
+    `sudo raspi-config` and look for "Interfacing Options"
 
 ## Build executable
 
@@ -24,7 +31,7 @@ library is available via a Debian package.)
 `make test_MQTT`   # app to test MQTT publishing
 
 `make`             # build application
-## Installation as an MQTT service
+## Installation as a systemd service
 Modify temp_humidity.sh, temp_mon.service as needed for
 * user name (pi vs. hbarta)
 * location (temp_humidity.sh)
