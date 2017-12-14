@@ -20,11 +20,11 @@ else
     host=$1
 fi
 
+# ID our host
 HOSTNAME=`hostname`
 
-echo host $host
-echo API key $key
-echo $HOSTNAME
+# add user's !/bin to PATH
+PATH=${HOME}/bin:$PATH
 
-/home/hbarta/bin/accuweather.py -l 26289_PC -k $key -t -v 2>>/tmp/accuweather.txt | \
+accuweather.py -l 26289_PC -k $key -v 2>>/tmp/accuweather.txt | \
 mosquitto_pub -s -t home_automation/$HOSTNAME/accuweather/weather
