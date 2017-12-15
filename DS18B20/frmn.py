@@ -3,9 +3,25 @@
 """
 Monitor TP-Link HS-100 smartplug to determine when freezer door is left ajar
 
-Some of this code (validIP, encrypot, decrypt and contents of sendrecv) are
-copied from tplink-smartplug.py
-(https://github.com/softScheck/tplink-smartplug)
+Some of this code (validIP, encrypt, decrypt and contents of sendrecv) are
+copied from tplink-smartplug.py (https://github.com/softScheck/tplink-smartplug)
+and are covered by the following copyright.
+
+# by Lubomir Stroetmann
+# Copyright 2016 softScheck GmbH 
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 
 """
 
