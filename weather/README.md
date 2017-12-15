@@ -5,7 +5,7 @@ stdout and the program `mosquitto_pub` will be used to publish to the MQTT
 broker.
 
 ## Requirements
-* API keps from the various providers
+* API keys from the various providers
 * Mosquitto client programs
 
     `apt install -y mosquitto-clients`
