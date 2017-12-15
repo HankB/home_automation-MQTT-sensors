@@ -26,3 +26,7 @@ test_MQTT: mosquitto_MQTT.o t_mosquitto_MQTT.o
 clean:
 	rm -f $(OBJ) $(TEST_OBJ) $(REPORT_OBJ) t_mosquitto_MQTT.o HTU21D_test\
 			test_MQTT HTU21D_publish
+
+install:
+	mkdir -p ~/bin
+	cp HTU21D_report temp_humidity_cron.sh ~/bin
