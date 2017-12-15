@@ -1,8 +1,10 @@
 #include <stdio.h>
-#include <errno.h>
+#include <time.h>
 #include <stdlib.h>
-#include <string.h>
+#include <errno.h>
 #include <unistd.h>
+#include <string.h>
+
 #include "wiringPi.h"
 #include "wiringPiI2C.h"
 
@@ -17,7 +19,8 @@ int main ()
 		exit (-1);
 	}
 	
-    printf("%5.2f, %5.2f", getTemperature(fd)/5.0*9.0+32, getHumidity(fd));
+    printf("%ld, %5.2f, %5.2f", time(0),
+            getTemperature(fd)/5.0*9.0+32, getHumidity(fd));
 	
 	return 0;
 }
