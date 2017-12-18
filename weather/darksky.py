@@ -87,5 +87,5 @@ print(  timestamp,
         cont['currently']['humidity']*100, 
         cont['currently']['windBearing'], 
         cont['currently']['windSpeed'],
-        cont['currently']['summary'])
+        cont['currently']['summary'], sep=', ', end='')
 sys.exit(0)
