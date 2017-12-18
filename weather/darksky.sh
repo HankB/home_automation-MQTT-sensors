@@ -29,5 +29,5 @@ PATH=${HOME}/bin:$PATH
 
 echo darksky.py -l $location -k $key -v
 
-echo darksky.py -l $location -k $key -v 2>>/tmp/darksky.txt | \
+darksky.py -l $location -k $key -v 2>>/tmp/darksky.txt | \
 mosquitto_pub -s -t home_automation/$HOSTNAME/darksky/weather -h $host
