@@ -84,7 +84,7 @@ if verbose: eprint("cont[currently][summary]:", cont['currently']['summary'])
 print(  timestamp, 
         cont['currently']['time'], 
         cont['currently']['temperature'], 
-        cont['currently']['humidity'], 
+        cont['currently']['humidity']*100, 
         cont['currently']['windBearing'], 
         cont['currently']['windSpeed'],
         cont['currently']['summary'])
