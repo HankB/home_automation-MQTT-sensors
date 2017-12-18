@@ -38,7 +38,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--location', '-l', metavar="<location code>",
                     nargs=1, required=True, help='specify location code')
 parser.add_argument('--apikey', '-k', metavar="<API key>",
-                    nargs=1, required=True, help='broker host name')
+                    nargs=1, required=True, help='provide API key')
 parser.add_argument('--test', '-t', # metavar="<test option>",
                     action='store_true', help='use canned response')
 parser.add_argument("--verbosity", "-v", 
