@@ -28,4 +28,4 @@ HOSTNAME=`hostname`
 PATH=${HOME}/bin:$PATH
 
 darksky.py -l $location -k $key 2>>/tmp/darksky.txt | \
-mosquitto_pub -s -t home_automation/$HOSTNAME/darksky/weather -h $host
+mosquitto_pub -s -t home_automation/$HOSTNAME/darksky/drksky_weather -h $host
