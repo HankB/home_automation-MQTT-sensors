@@ -1,3 +1,7 @@
+[Unit]
+Wants=network-online.target
+After=network-online.target
+
 [Service]
 WorkingDirectory=/home/hbarta/freezer_pwr
 ExecStart=/home/hbarta/bin/frmn.py  -n TPplug04
@@ -7,6 +11,6 @@ StandardError=syslog
 SyslogIdentifier=freezer
 User=hbarta
 Group=hbarta
+
 [Install]
 WantedBy=multi-user.target
-
