@@ -30,7 +30,7 @@ on any host since it uses network to collect information.)
 
 * paho-mqtt module as above.
 
-    `pip install paho-mqtt`
+    `pip3 install paho-mqtt`
 
 #### Status
 
