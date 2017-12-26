@@ -29,6 +29,9 @@ on any host since it uses network to collect information.)
 #### Requirements
 
 * paho-mqtt module as above.
+
+    `pip install paho-mqtt`
+
 #### Status
 
 * Reads one sample and reports reply to STDOUT.
