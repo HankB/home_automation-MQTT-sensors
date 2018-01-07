@@ -21,6 +21,10 @@ Reads and publishes on 5 minute schedule and puts out a lot of debug output. At 
 
 * Make update interval and topic command line arguments.
 
+### ds18b20-test.py
+
+Test script to read sensor, report results and exit. Does not require paho-mqtt.
+
 ### frmn.py
 
 Script to read power usage from a TP-Link HS110 smart outlet. (Can run
