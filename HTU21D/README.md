@@ -39,8 +39,13 @@ reasons. (vim technically not required if you prefer a different editor. ;) )
 `make test_MQTT`   # app to test MQTT publishing
 
 `make`             # build application
-## Installation
-TODO: Install the mosquitto client and the executables
+## Installation of binaries only
+
+* enable i2c using `sudo raspi-config` (along with hostname, timezone, localisation etc.)
+* `mkdir bin && cd bin`
+* copy binary and script from build host. (`HTU21D_report temp_humidity_cron.sh`)
+* edit `temp_humidity_cron` appropriately,
+* install MQTT clients  and wiringpi `sudo apt install mosquitto-clients wiringpi`
 ## Installation as a systemd service
 #### This is deprecated as the new strategy is to run via cron.
 Modify temp_humidity.sh, temp_mon.service as needed for
