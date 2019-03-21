@@ -14,20 +14,33 @@ Use the DS18B20 temperature sensor to read freezer temperature. Write the result
 
 See https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/overview
 
-Script to read temperatures from a DS18B20 temperature sensor connected to a Raspberry Pi and publish to an MQTT server. This works with any Raspberry Pi which has network connectivity including a Pi Zero with USB WiFi dongle or Pi Zero W.
+Script to read temperatures from a DS18B20 temperature sensor connected to a
+Raspberry Pi and write to STDOUT in a format suitable for the home automation 
+project.
 
-#### Requirements
+```shell
+pi@niwot:~/Documents/home_automation-MQTT-sensors/DS18B20 $ ./ds18b20-temp.py
+  1553183625, -6.2
+pi@niwot:~/Documents/home_automation-MQTT-sensors/DS18B20 $
+```
 
-Enable 1 wire interface
+### Requirements
+
+Enable 1 wire interface on Raspberry Pi.
 
 * Add `dtoverlay=w1-gpio` to the end of `/boot/config.txt`.
 
-#### Status
+Install `mosquitto-clients`
 
-Work in progress to convert to a script that reads temperature and writes to STDOUT
-in order to publish using mosquitto_pub.
+```shell
+sudo apt install mosquitto-clients
+```
 
-#### TODO
+### Status
 
-* Continue with restructuring
-* Write shell script to orchestrate.
+Working in production.
+
+### TODO
+
+* Hosts and topi are presently hard coded.
+* There are no unit tests for the Python code.
