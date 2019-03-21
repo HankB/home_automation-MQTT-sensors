@@ -1,10 +1,14 @@
-# Support DS18B20 sensor 
+# Support DS18B20 sensor
 
 This is used to monitor the basement freezer temperature. Related to this is
 a script that monitors power usage for the freezer using a TP-Link HS110. (in
 `.../home_automation-MQTT-sensors/energy`)
 
-## Modules
+## Strategy
+
+Use the DS18B20 temperature sensor to read freezer temperature. Write the result to STDOUT in a format suitable tp pipe to `mosquitto_pub` to publish to the MQTT broker on `oak`.
+
+## Components
 
 ### ds18b20-temp.py
 
@@ -14,16 +18,16 @@ Script to read temperatures from a DS18B20 temperature sensor connected to a Ras
 
 #### Requirements
 
-Install paho-mqtt following instructions at https://www.eclipse.org/paho/clients/python/.
-
 Enable 1 wire interface
 
 * Add `dtoverlay=w1-gpio` to the end of `/boot/config.txt`.
 
 #### Status
 
-Reads and publishes on 5 minute schedule and puts out a lot of debug output. At present the script is hard coded for the subject `home_automation/niwot/basement/freezer_temp`.
+Work in progress to convert to a script that reads temperature and writes to STDOUT
+in order to publish using mosquitto_pub.
 
 #### TODO
 
-* Make update interval and topic command line arguments.
+* Continue with restructuring
+* Write shell script to orchestrate.
