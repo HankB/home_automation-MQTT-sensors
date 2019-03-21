@@ -1,7 +1,8 @@
-# Support DS18B20 sensor
+# Support DS18B20 sensor 
 
 This is used to monitor the basement freezer temperature. Related to this is
-a script that monitors power usage for the freezer using a TP-Link HS110.
+a script that monitors power usage for the freezer using a TP-Link HS110. (in
+`.../home_automation-MQTT-sensors/energy`)
 
 ## Modules
 
@@ -26,28 +27,3 @@ Reads and publishes on 5 minute schedule and puts out a lot of debug output. At 
 #### TODO
 
 * Make update interval and topic command line arguments.
-
-### frmn.py
-
-Script to read power usage from a TP-Link HS110 smart outlet. (Can run
-on any host since it uses network to collect information.)
-
-#### Requirements
-
-* paho-mqtt module as above.
-
-    `pip3 install paho-mqtt`
-
-#### Status
-
-* Reads one sample and reports reply to STDOUT.
-* Parse desired info from reply.
-* Publish to MQTT server
-
-#### TODO
-
-* Update TODO list ;)
-* Done - Make topic command line arguments.
-* <s>Recover from dropped MQTT server connection.</s>
-* Open/Close connection for each sample to send.
-* Investigate switch to libmosquitto
