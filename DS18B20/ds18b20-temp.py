@@ -34,6 +34,11 @@ def read_temp():
 # topic = "home_automation/niwot/basement/freezer_temp"
 timeStamp = int(time.time())
 
-def publish_temperature(timestamp, temperature):
-    payload = "{0:12.0F}, {1:3.1F}".format(timestamp,temperature)
-    print("payload)
+def publish_temperature(timeStamp, temperature):
+    payload = "{0:12.0F}, {1:3.1F}".format(timeStamp,temperature)
+    print(payload)
+
+(temp_c, temp_f) = read_temp()
+publish_temperature(timeStamp, temp_f)
+
+
