@@ -8,6 +8,15 @@ a script that monitors power usage for the freezer using a TP-Link HS110. (in
 
 Use the DS18B20 temperature sensor to read freezer temperature. Write the result to STDOUT in a format suitable tp pipe to `mosquitto_pub` to publish to the MQTT broker on `oak`.
 
+## Usage
+
+* Copy `ds18b20-temp.py` and `publish-freezer-temp.sh` to `/home/pi/bin`.
+* Add a cron job to execute on the desired interval.
+
+```cron
+*/5 * * * * /home/pi/bin/publish-freezer-temp.sh
+```
+
 ## Components
 
 ### ds18b20-temp.py
@@ -39,6 +48,12 @@ sudo apt install mosquitto-clients
 ### Status
 
 Working in production.
+
+#### Obsolete
+
+The following files are obsolete following the move to a cron job from a systemd service.
+
+* freezer_temp.service
 
 ### TODO
 
