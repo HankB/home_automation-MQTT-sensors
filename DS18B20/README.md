@@ -1,50 +1,65 @@
 # Support DS18B20 sensor
-This is used to monitor the basement freezer temperature. Related to this is
-a script that monitors power usage for the freezer using a TP-Link HS110.
 
-## Modules
+This is used to monitor the basement freezer temperature. Related to this is
+a script that monitors power usage for the freezer using a TP-Link HS110. (in
+`.../home_automation-MQTT-sensors/energy`)
+
+## Strategy
+
+Use the DS18B20 temperature sensor to read freezer temperature. Write the result to STDOUT in a format suitable tp pipe to `mosquitto_pub` to publish to the MQTT broker on `oak`.
+
+## Usage
+
+* Copy `ds18b20-temp.py` and `publish-freezer-temp.sh` to `/home/pi/bin`.
+* Add a cron job to execute on the desired interval.
+
+```cron
+*/5 * * * * /home/pi/bin/publish-freezer-temp.sh
+```
+
+## Components
+
 ### ds18b20-temp.py
+
 See https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/overview
 
-Script to read temperatures from a DS18B20 temperature sensor connected to a Raspberry Pi and publish to an MQTT server. This works with any Raspberry Pi which has network connectivity including a Pi Zero with USB WiFi dongle or Pi Zero W.
+Script to read temperatures from a DS18B20 temperature sensor connected to a
+Raspberry Pi and write to STDOUT in a format suitable for the home automation 
+project.
 
-#### Requirements
-Install paho-mqtt following instructions at https://www.eclipse.org/paho/clients/python/.
+```shell
+pi@niwot:~/Documents/home_automation-MQTT-sensors/DS18B20 $ ./ds18b20-temp.py
+  1553183625, -6.2
+pi@niwot:~/Documents/home_automation-MQTT-sensors/DS18B20 $
+```
 
-Enable 1 wire interface
+### Requirements
+
+Enable 1 wire interface on Raspberry Pi.
+
 * Add `dtoverlay=w1-gpio` to the end of `/boot/config.txt`.
-#### Status
 
-Reads and publishes on 5 minute schedule and puts out a lot of debug output. At present the script is hard coded for the subject `home_automation/niwot/basement/freezer_temp`.
+Install `mosquitto-clients`
 
-#### TODO
-
-* Make update interval and topic command line arguments.
+```shell
+sudo apt install mosquitto-clients
+```
 
 ### ds18b20-test.py
 
 Test script to read sensor, report results and exit. Does not require paho-mqtt.
 
-### frmn.py
+### Status
 
-Script to read power usage from a TP-Link HS110 smart outlet. (Can run
-on any host since it uses network to collect information.)
+Working in production.
 
-#### Requirements
+#### Obsolete
 
-* paho-mqtt module as above.
+The following files are obsolete following the move to a cron job from a systemd service.
 
-    `pip3 install paho-mqtt`
+* freezer_temp.service
 
-#### Status
+### TODO
 
-* Reads one sample and reports reply to STDOUT.
-* Parse desired info from reply.
-* Publish to MQTT server
-#### TODO
-
-* Update TODO list ;)
-* Done - Make topic command line arguments.
-* <s>Recover from dropped MQTT server connection.</s>
-* Open/Close connection for each sample to send.
-* Investigate switch to libmosquitto
+* Hosts and topic are presently hard coded.
+* There are no unit tests for the Python code.
