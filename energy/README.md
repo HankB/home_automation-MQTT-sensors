@@ -13,7 +13,7 @@ Install paho-mqtt following instructions at https://www.eclipse.org/paho/clients
 
 * paho-mqtt module as above.
 
-    `pip3 install paho-mqtt`
+    `pip install paho-mqtt`
 
 ### Status
 
