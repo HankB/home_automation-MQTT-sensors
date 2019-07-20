@@ -92,7 +92,6 @@ def sendrecv(cmd):
 """
 Functions related to publishing MQTT messages
 """
-topic = "home_automation/"+socket.gethostname()+"/basement/freezer_power"
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -151,8 +150,17 @@ host.add_argument("-n", "--name", metavar="<name>",
 parser.add_argument("-v", "--verbosity", 
                     help="increase output verbosity",
                     action="store_true")
+parser.add_argument("-l", "--location", type=str,
+                    help="subject [default \"basement\"]",
+                    default="basement")
+parser.add_argument("-i", "--interval", type=int,
+                    help="interval, minutes [default 5]",
+                    default=5)
 args = parser.parse_args()
 verbose = args.verbosity
+
+topic = "home_automation/"+socket.gethostname()+"/"+args.location+"/freezer_power"
+
 
 ip = args.target
 port = 9999
@@ -163,8 +171,8 @@ else:
     if verbose: print("Using ", args.target)
     addr = args.target
     
-update_interval = 5		# minutes
-delay_to_interval(update_interval)
+#args.interval = 5		# minutes
+delay_to_interval(args.interval)
 
 while True:    
     timestamp = int(time.time())
@@ -183,4 +191,4 @@ while True:
 
     if verbose: print("c,v,p", current, voltage, power)
     publish_power(timestamp, current, voltage, power)
-    delay_to_interval(update_interval)
+    delay_to_interval(args.interval)
