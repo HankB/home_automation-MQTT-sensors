@@ -5,6 +5,28 @@ smart outlet. Related to this is a script that monitors temperatyre using a DS18
 temperature sensor connected to a Raspberry Pi Zero
 (`.../home_automation-MQTT-sensors/DS18B20`).
 
+## Usage
+
+```text
+hbarta@olive05:/mnt/home/hbarta/Programming/home_automation-MQTT-sensors/energy$ ./frmn.py -h
+usage: frmn.py [-h] (-t <ip> | -n <name>) [-v] [-l LOCATION] [-i INTERVAL]
+
+Freezer monitor v0.3
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t <ip>, --target <ip>
+                        Target IP Address
+  -n <name>, --name <name>
+                        Target host name
+  -v, --verbosity       increase output verbosity
+  -l LOCATION, --location LOCATION
+                        subject [default "basement"]
+  -i INTERVAL, --interval INTERVAL
+                        interval, minutes [default 5]
+hbarta@olive05:/mnt/home/hbarta/Programming/home_automation-MQTT-sensors/energy$ 
+```
+
 ## Modules
 
 ### Requirements
