@@ -37,13 +37,11 @@ Install paho-mqtt following instructions at https://www.eclipse.org/paho/clients
 
     `pip install paho-mqtt`
 
-### Status
+## Status
 
-* Reads one sample and reports reply to STDOUT.
-* Parse desired info from reply.
-* Publish to MQTT server
+* Working - publishes to oak.
 
-### TODO
+## TODO
 
 * Update TODO list ;)
 * Done - Make topic command line arguments.
